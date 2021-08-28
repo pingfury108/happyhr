@@ -60,7 +60,8 @@ func OpenTestConnection() (db *gorm.DB, err error) {
 		db, err = gorm.Open(postgres.Open(dbDSN), &gorm.Config{})
 	default:
 		log.Println("testing sqlite3...")
-		db, err = gorm.Open(sqlite.Open(filepath.Join(os.TempDir(), "gorm.db")), &gorm.Config{})
+		wd, _ := os.Getwd()
+		db, err = gorm.Open(sqlite.Open(filepath.Join(wd, "happyhr.db")), &gorm.Config{})
 	}
 
 	if debug := os.Getenv("DEBUG"); debug == "true" {
@@ -82,10 +83,10 @@ func RunMigrations() {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(allModels), func(i, j int) { allModels[i], allModels[j] = allModels[j], allModels[i] })
 
-	if err = DB.Migrator().DropTable(allModels...); err != nil {
-		log.Printf("Failed to drop table, got error %v\n", err)
-		os.Exit(1)
-	}
+	// if err = DB.Migrator().DropTable(allModels...); err != nil {
+	// 	log.Printf("Failed to drop table, got error %v\n", err)
+	// 	os.Exit(1)
+	// }
 
 	if err = DB.AutoMigrate(allModels...); err != nil {
 		log.Printf("Failed to auto migrate, but got error %v\n", err)

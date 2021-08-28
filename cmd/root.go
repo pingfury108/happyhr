@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 
+	_ "happyhr/models"
 	"happyhr/router"
 
 	"github.com/spf13/cobra"
