@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//调岗记录
 type JobTransferRecord struct {
 	gorm.Model
 	Date               time.Time

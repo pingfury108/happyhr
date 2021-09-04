@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//社保缴纳记录
 type SocialSecurityRecord struct {
 	gorm.Model
 	SerialNumber      uint

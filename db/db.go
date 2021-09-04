@@ -1,6 +1,7 @@
-package models
+package db
 
 import (
+	"happyhr/models"
 	"log"
 	"math/rand"
 	"os"
@@ -76,10 +77,10 @@ func OpenTestConnection() (db *gorm.DB, err error) {
 func RunMigrations() {
 	var err error
 	allModels := []interface{}{
-		&Employee{}, &Resume{},
-		EmployeeInformationAttachment{}, &JobTransferRecord{},
-		&RewardPunishmentRecord{}, &SocialSecurityRecord{},
-		&TrainingRecord{}}
+		&models.Employee{}, &models.Resume{},
+		models.EmployeeInformationAttachment{}, &models.JobTransferRecord{},
+		&models.RewardPunishmentRecord{}, &models.SocialSecurityRecord{},
+		&models.TrainingRecord{}}
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(allModels), func(i, j int) { allModels[i], allModels[j] = allModels[j], allModels[i] })
 

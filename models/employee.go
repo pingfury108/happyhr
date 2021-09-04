@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// 员工
 type Employee struct {
 	gorm.Model
 	SerialNumber          uint `grom:"unique"`
