@@ -19,7 +19,8 @@ import (
 	"fmt"
 	"os"
 
-	_ "happyhr/models"
+	_ "happyhr/controllers"
+	_ "happyhr/db"
 	"happyhr/router"
 
 	"github.com/spf13/cobra"
@@ -38,7 +39,7 @@ var rootCmd = &cobra.Command{
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 	Run: func(cmd *cobra.Command, args []string) {
-		r := router.Create_gin()
+		r := router.Route
 		r.Run(":8085")
 	},
 }

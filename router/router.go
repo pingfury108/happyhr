@@ -4,14 +4,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var route *gin.Engine = gin.Default()
+var Route *gin.Engine = gin.Default()
 
-func Create_gin() *gin.Engine {
+func ping() {
 
-	route.GET("/ping", func(c *gin.Context) {
+	Route.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	return route
+}
+
+func init() {
+	ping()
 }
