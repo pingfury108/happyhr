@@ -18,17 +18,21 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
+	"runtime"
 
 	_ "happyhr/controllers"
 	_ "happyhr/db"
 	"happyhr/router"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
+var logLevel string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -51,9 +55,10 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, initLog)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./happyhr.toml)")
+	rootCmd.PersistentFlags().StringVar(&logLevel, "logLevel", "Info", "Loglevel")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -74,4 +79,33 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+}
+
+func initLog() {
+	formatter := &log.TextFormatter{
+		FullTimestamp: true,
+	}
+
+	switch logLevel {
+	case "Debug":
+		log.SetLevel(log.DebugLevel)
+		formatter.CallerPrettyfier = setLog
+		log.SetReportCaller(true)
+	case "Info":
+		log.SetLevel(log.InfoLevel)
+	case "Error":
+		log.SetLevel(log.ErrorLevel)
+		formatter.CallerPrettyfier = setLog
+		log.SetReportCaller(true)
+	case "Fatal":
+		log.SetLevel(log.FatalLevel)
+		formatter.CallerPrettyfier = setLog
+		log.SetReportCaller(true)
+	}
+	log.SetFormatter(formatter)
+}
+
+func setLog(f *runtime.Frame) (string, string) {
+	filename := path.Base(f.File)
+	return f.Function, fmt.Sprintf("%s:%d", filename, f.Line)
 }

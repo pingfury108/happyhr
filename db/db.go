@@ -38,6 +38,7 @@ func init() {
 		}
 
 		DB.Logger = DB.Logger.LogMode(logger.Info)
+		DB.AutoMigrate()
 	}
 }
 
